@@ -1,0 +1,84 @@
+version: 2.1
+
+executors:
+  node:
+    docker:
+      - image: circleci/node:8.10.0
+
+commands:
+  attach_workspace_at_project:
+    steps:
+      - attach_workspace:
+          at: ~/project/
+
+references:
+  npm_cache_key: &npm_cache_key
+    v1-dependency-npm-{{ checksum "package-lock.json" }}
+
+  only_version_tags: &only_version_tags
+    tags:
+      only: /v[0-9]+(\.[0-9]+)*/
+
+jobs:
+  install:
+    executor: node
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - *npm_cache_key
+
+      - run:
+          name: Install dependencies
+          command: npm install
+
+      - save_cache:
+          key: *npm_cache_key
+          paths:
+            - "node_modules"
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  test:
+    executor: node
+    steps:
+      - attach_workspace_at_project
+      - run:
+          name: Run tests
+          command: make test
+
+  release:
+    executor: node
+    steps:
+      - attach_workspace_at_project
+      - run:
+          name: npm auth
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ${HOME}/.npmrc
+      - run:
+          name: Publish to npm
+          command: make publish
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - install:
+          filters:
+            <<: *only_version_tags
+      - test:
+          requires:
+            - install
+          filters:
+            <<: *only_version_tags
+      - release:
+          requires:
+            - test
+          filters:
+            <<: *only_version_tags
+            branches:
+              ignore: /.*/
+
