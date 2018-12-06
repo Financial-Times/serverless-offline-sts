@@ -1,7 +1,7 @@
-class OfflineAssumeRole {
+class OfflineSTS {
 	constructor(serverless) {
 		this.commands = {
-			OfflineAssumeRole: {
+			OfflineSTS: {
 				lifecycleEvents: [],
 			},
 		};
@@ -41,4 +41,4 @@ class OfflineAssumeRole {
 	}
 }
 
-module.exports = OfflineAssumeRole;
+module.exports = OfflineSTS;

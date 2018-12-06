@@ -1,23 +1,23 @@
 {
-  "name": "serverless-offline-assume-role",
+  "name": "serverless-offline-sts",
   "version": "1.0.0",
   "description": "Use AWS STS to assume a role when using serverless-offline",
-  "main": "offline-assume-role.js",
+  "main": "index.js",
   "scripts": {
     "precommit": "secret-squirrel",
     "commitmsg": "secret-squirrel-commitmsg"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Financial-Times/serverless-offline-assume-role.git"
+    "url": "git+https://github.com/Financial-Times/serverless-offline-sts.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Financial-Times/serverless-offline-assume-role/issues"
+    "url": "https://github.com/Financial-Times/serverless-offline-sts/issues"
   },
-  "homepage": "https://github.com/Financial-Times/serverless-offline-assume-role#readme",
+  "homepage": "https://github.com/Financial-Times/serverless-offline-sts#readme",
   "devDependencies": {
     "@financial-times/secret-squirrel": "^2.11.0",
     "eslint": "^5.9.0",
