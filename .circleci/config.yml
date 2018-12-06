@@ -53,6 +53,7 @@ jobs:
 
   release:
     executor: node
+    context: rel-eng-creds
     steps:
       - attach_workspace_at_project
       - run:
