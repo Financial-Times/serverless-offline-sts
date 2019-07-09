@@ -17,11 +17,7 @@ If you have integration tests that do not use serverless directly, you may use a
 
 const {assumeRole} = require('serverless-offline-sts');
 
-const rolePromise = assumeRole({
-  region: 'eu-west-1',
-  role: 'arn:aws:iam::12345:role/MyRole',
-  sessionNamespace: 'somestring'
-});
+const rolePromise = assumeRole();
 
 describe('My integration tests', () => {
   beforeAll(() => rolePromise);
@@ -39,11 +35,7 @@ sts.js
 
 const {assumeRole} = require('serverless-offline-sts');
 
-const rolePromise = assumeRole({
-  region: 'eu-west-1',
-  role: 'arn:aws:iam::12345:role/MyRole',
-  sessionNamespace: 'somestring'
-})
+assumeRole()
   .then(() => {
     // need to wrap run() as it is not defined on require() - mocha adds it globally
     // at some later point
