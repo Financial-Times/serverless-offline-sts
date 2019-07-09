@@ -13,14 +13,27 @@ class OfflineSTS {
 
 	async assumeRole(serverless) {
 		const AWS = require('aws-sdk');
+		return assumeRole({
+			region: serverless.service.provider.region,
+			role: serverless.service.provider.role,
+			sessionNamespace: serverless.service.service
+		})
+	}
 
-		AWS.config.region = serverless.service.provider.region;
+	static async assumeRole ({
+		region,
+		role,
+		sessionNamespace
+	}) {
+		const AWS = require('aws-sdk');
+
+		AWS.config.region = region;
 		const sts = new AWS.STS({ apiVersion: '2011-06-15' });
 
 		return sts
 			.assumeRole({
-				RoleArn: serverless.service.provider.role,
-				RoleSessionName: `${serverless.service.service}-${process.env.USER ||
+				RoleArn: role,
+				RoleSessionName: `${sessionNamespace}-${process.env.USER ||
 					'unknown'}-${Date.now()}`,
 			})
 			.promise()
