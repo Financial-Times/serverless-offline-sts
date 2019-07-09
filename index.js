@@ -1,3 +1,41 @@
+const execa = require('execa')
+const yaml = require('js-yaml');
+
+
+const readServerless = async () => {
+	const serverlessYaml = await execa('serverless',  ['print']);
+	return yaml.load(serverlessYaml.stdout);
+}
+
+
+const assumeRole = async (config) => {
+	const AWS = require('aws-sdk');
+	AWS.config.region = config.provider.region;
+	const sts = new AWS.STS({ apiVersion: '2011-06-15' });
+
+	return sts
+		.assumeRole({
+			RoleArn: config.provider.role,
+			RoleSessionName: `${config.provider.service}-${process.env.USER ||
+				'unknown'}-${Date.now()}`,
+		})
+		.promise()
+		.then(data => {
+			AWS.config.update({
+				accessKeyId: data.Credentials.AccessKeyId,
+				secretAccessKey: data.Credentials.SecretAccessKey,
+				sessionToken: data.Credentials.SessionToken,
+			});
+		})
+		.catch(err => {
+			console.error(
+				`Failed to assume ${serverless.service.provider.role}`,
+				err,
+			);
+			throw err;
+		});
+}
+
 class OfflineSTS {
 	constructor(serverless) {
 		this.commands = {
@@ -12,45 +50,12 @@ class OfflineSTS {
 	}
 
 	async assumeRole(serverless) {
-		const AWS = require('aws-sdk');
-		return assumeRole({
-			region: serverless.service.provider.region,
-			role: serverless.service.provider.role,
-			sessionNamespace: serverless.service.service
-		})
+		return assumeRole(serverless.service)
 	}
 
-	static async assumeRole ({
-		region,
-		role,
-		sessionNamespace
-	}) {
-		const AWS = require('aws-sdk');
-
-		AWS.config.region = region;
-		const sts = new AWS.STS({ apiVersion: '2011-06-15' });
-
-		return sts
-			.assumeRole({
-				RoleArn: role,
-				RoleSessionName: `${sessionNamespace}-${process.env.USER ||
-					'unknown'}-${Date.now()}`,
-			})
-			.promise()
-			.then(data => {
-				AWS.config.update({
-					accessKeyId: data.Credentials.AccessKeyId,
-					secretAccessKey: data.Credentials.SecretAccessKey,
-					sessionToken: data.Credentials.SessionToken,
-				});
-			})
-			.catch(err => {
-				console.error(
-					`Failed to assume ${serverless.service.provider.role}`,
-					err,
-				);
-				throw err;
-			});
+	static async assumeRole () {
+		const serverlessYaml = await readServerless();
+		return assumeRole(serverlessYaml)
 	}
 }
 
