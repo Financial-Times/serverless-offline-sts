@@ -70,6 +70,7 @@ workflows:
           filters:
             <<: *only_version_tags
       - test:
+          context: rel-eng-creds
           requires:
             - install
           filters:
