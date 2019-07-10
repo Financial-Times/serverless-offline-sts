@@ -2,6 +2,15 @@
 
 Use AWS STS to assume a role when using serverless-offline
 
+## Why does this package exist
+It's common practice in a lot of teams at the FT to keep credential mangement local to a project, i.e. no global environment variables needed in your development environment to run the project (with perhaps the exception of some global variables used to fetch others, such as vault login tokens).
+
+We also try to follow best practice of least privilege when managing IAM resources. Our deploy _users_ (for which we mint access keys) have access to create and modify resources' configuration, whereas our application _roles_ have access to interact with (read, write etc) those resources once created.
+
+However, AWS/serverless have a credentials model where allowing a user to assume a role in local dev involves storing keys and role assumption config in a global `~/.aws` directory which a) menas we have credentials living outside of the project root and b) we have another source of truth for the relation between roles and users, which must be kept in sync.
+
+This package gets around that by providing a serverless plugin that assumes the application role before starting serverless/integration tests, thus removing the need to maintain any credentials/config outside the project.
+
 ## Usage
 
 Add `serverless-offline-sts` to your plugins list in `serverless.yaml` (after `serverless-offline`)
