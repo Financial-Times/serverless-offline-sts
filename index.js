@@ -1,15 +1,13 @@
-const execa = require('execa')
+const execa = require('execa');
 const yaml = require('js-yaml');
 
-
 const readServerless = async () => {
-	const serverlessYaml = await execa('serverless',  ['print']);
+	const serverlessYaml = await execa('serverless', ['print']);
 	return yaml.load(serverlessYaml.stdout);
-}
+};
 
-
-const assumeRole = async (config) => {
-	const AWS = require('aws-sdk');
+const assumeRole = async config => {
+	const AWS = require('aws-sdk'); // eslint-disable-line global-require
 	AWS.config.region = config.provider.region;
 	const sts = new AWS.STS({ apiVersion: '2011-06-15' });
 
@@ -28,13 +26,10 @@ const assumeRole = async (config) => {
 			});
 		})
 		.catch(err => {
-			console.error(
-				`Failed to assume ${serverless.service.provider.role}`,
-				err,
-			);
+			console.error(`Failed to assume ${config.provider.role}`, err);
 			throw err;
 		});
-}
+};
 
 class OfflineSTS {
 	constructor(serverless) {
@@ -50,12 +45,12 @@ class OfflineSTS {
 	}
 
 	async assumeRole(serverless) {
-		return assumeRole(serverless.service)
+		return assumeRole(serverless.service);
 	}
 
-	static async assumeRole () {
+	static async assumeRole() {
 		const serverlessYaml = await readServerless();
-		return assumeRole(serverlessYaml)
+		return assumeRole(serverlessYaml);
 	}
 }
 
