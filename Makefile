@@ -20,7 +20,3 @@ node_modules/@financial-times/rel-engage/index.mk:
 # ---------------------------
 
 test: lint
-
-publish:
-	npm version --no-git-tag-version ${CIRCLE_TAG}
-	npm publish --access public

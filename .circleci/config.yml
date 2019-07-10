@@ -60,7 +60,7 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ${HOME}/.npmrc
       - run:
           name: Publish to npm
-          command: make publish
+          command: make npm-publish
 
 workflows:
   version: 2
