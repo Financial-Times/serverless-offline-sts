@@ -3,6 +3,7 @@
 Use AWS STS to assume a role when using serverless-offline
 
 ## Why does this package exist
+
 It's common practice in a lot of teams at the FT to keep credential mangement local to a project, i.e. no global environment variables needed in your development environment to run the project (with perhaps the exception of some global variables used to fetch others, such as vault login tokens).
 
 We also try to follow best practice of least privilege when managing IAM resources. Our deploy _users_ (for which we mint access keys) have access to create and modify resources' configuration, whereas our application _roles_ have access to interact with (read, write etc) those resources once created.
