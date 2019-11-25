@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  ft-snyk-orb: financial-times/ft-snyk-orb@0
+
 executors:
   node:
     docker:
@@ -75,10 +78,26 @@ workflows:
             - install
           filters:
             <<: *only_version_tags
+      #Scan package.json for vulnerable dependencies while developing
+      - ft-snyk-orb/scan-js-packages:
+          context: rel-eng-creds
+          requires:
+          - install
+          filters: *only_version_tags
       - release:
           context: rel-eng-creds
           requires:
             - test
+          filters:
+            <<: *only_version_tags
+            branches:
+              ignore: /.*/
+    #Scan and monitor vulnerabilities once in production
+      - ft-snyk-orb/scan-and-monitor-js-packages:
+          name: snyk-scan-and-monitor
+          context: rel-eng-creds
+          requires:
+            - release
           filters:
             <<: *only_version_tags
             branches:
