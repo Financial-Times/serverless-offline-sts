@@ -15,8 +15,7 @@ commands:
           at: ~/project/
 
 references:
-  npm_cache_key: &npm_cache_key
-    v1-dependency-npm-{{ checksum "package-lock.json" }}
+  npm_cache_key: &npm_cache_key v1-dependency-npm-{{ checksum "package-lock.json" }}
 
   only_version_tags: &only_version_tags
     tags:
@@ -39,7 +38,7 @@ jobs:
       - save_cache:
           key: *npm_cache_key
           paths:
-            - "node_modules"
+            - 'node_modules'
 
       - persist_to_workspace:
           root: .
@@ -82,7 +81,7 @@ workflows:
       - ft-snyk-orb/scan-js-packages:
           context: rel-eng-creds
           requires:
-          - install
+            - install
           filters: *only_version_tags
       - release:
           context: rel-eng-creds
@@ -92,7 +91,7 @@ workflows:
             <<: *only_version_tags
             branches:
               ignore: /.*/
-    #Scan and monitor vulnerabilities once in production
+      #Scan and monitor vulnerabilities once in production
       - ft-snyk-orb/scan-and-monitor-js-packages:
           name: snyk-scan-and-monitor
           context: rel-eng-creds
@@ -102,4 +101,3 @@ workflows:
             <<: *only_version_tags
             branches:
               ignore: /.*/
-

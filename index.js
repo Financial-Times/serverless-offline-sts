@@ -14,8 +14,9 @@ const assumeRole = async config => {
 	return sts
 		.assumeRole({
 			RoleArn: config.provider.role,
-			RoleSessionName: `${config.provider.service}-${process.env.USER ||
-				'unknown'}-${Date.now()}`,
+			RoleSessionName: `${config.provider.service}-${
+				process.env.USER || 'unknown'
+			}-${Date.now()}`,
 		})
 		.promise()
 		.then(data => {
