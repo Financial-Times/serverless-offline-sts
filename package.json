@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Financial-Times/serverless-offline-sts#readme",
   "devDependencies": {
-    "@financial-times/rel-engage": "^7.1.2"
+    "@financial-times/rel-engage": "^8.0.1"
   },
   "peerDependencies": {
     "serverless-offline": "^3.0.0"
