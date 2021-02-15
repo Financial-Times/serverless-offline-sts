@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/Financial-Times/serverless-offline-sts.git"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
