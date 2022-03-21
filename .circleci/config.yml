@@ -84,7 +84,7 @@ workflows:
             - install
           filters: *only_version_tags
       - release:
-          context: rel-eng-creds
+          context: npm-publish-token
           requires:
             - test
           filters:
