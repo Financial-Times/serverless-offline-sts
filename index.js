@@ -34,14 +34,8 @@ const assumeRole = async config => {
 
 class OfflineSTS {
 	constructor(serverless) {
-		this.commands = {
-			OfflineSTS: {
-				lifecycleEvents: [],
-			},
-		};
-
 		this.hooks = {
-			'before:offline:start:init': this.assumeRole.bind(null, serverless),
+			'before:offline:start': () => this.assumeRole(serverless),
 		};
 	}
 
