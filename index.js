@@ -10,7 +10,7 @@ const assumeRole = async config => {
 	const AWS = require('aws-sdk'); // eslint-disable-line global-require
 	AWS.config.region = config.provider.region;
 	const sts = new AWS.STS({ apiVersion: '2011-06-15' });
-
+	console.log(`Attempting to assume AWS role ${config.provider.role}`);
 	return sts
 		.assumeRole({
 			RoleArn: config.provider.role,
@@ -25,6 +25,9 @@ const assumeRole = async config => {
 				secretAccessKey: data.Credentials.SecretAccessKey,
 				sessionToken: data.Credentials.SessionToken,
 			});
+			console.log(
+				`Assumed AWS role ${config.provider.role} successfully`,
+			);
 		})
 		.catch(err => {
 			console.error(`Failed to assume ${config.provider.role}`, err);

@@ -22,10 +22,10 @@
   },
   "peerDependencies": {
     "serverless-offline": "^8.8.0",
-    "serverless": "^3.0.0"
+    "serverless": "^3.0.0",
+    "aws-sdk": "^2.875.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.875.0",
     "execa": "^2.0.3",
     "js-yaml": "^3.13.1"
   }
