@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "Use AWS STS to assume a role when using serverless-offline",
   "main": "index.js",
-  "scripts": {
-    "precommit": "secret-squirrel",
-    "commitmsg": "secret-squirrel-commitmsg"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Financial-Times/serverless-offline-sts.git"
@@ -25,10 +21,11 @@
     "@financial-times/rel-engage": "^8.0.3"
   },
   "peerDependencies": {
-    "serverless-offline": "^3.0.0"
+    "serverless-offline": "^8.8.0",
+    "serverless": "^3.0.0",
+    "aws-sdk": "^2.875.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.875.0",
     "execa": "^2.0.3",
     "js-yaml": "^3.13.1"
   }
